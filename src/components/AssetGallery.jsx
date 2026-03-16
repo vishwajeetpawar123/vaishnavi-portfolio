@@ -58,6 +58,16 @@ const ASSET_TREE = {
                 { type: 'image', src: '/assets/product identity/m22.png', label: '' },
                 { type: 'image', src: '/assets/product identity/m33.png', label: '' },
                 { type: 'video', src: '/assets/product identity/m55.mp4', label: '' },
+                { type: 'image', src: '/assets/product identity/1.png', label: '' },
+                { type: 'image', src: '/assets/product identity/2.png', label: '' },
+                { type: 'image', src: '/assets/product identity/3.png', label: '' },
+                { type: 'image', src: '/assets/product identity/4.png', label: '' },
+                { type: 'image', src: '/assets/product identity/5.png', label: '' },
+                { type: 'image', src: '/assets/product identity/6.png', label: '' },
+                { type: 'image', src: '/assets/product identity/7.png', label: '' },
+                { type: 'image', src: '/assets/product identity/ok.png', label: '' },
+                { type: 'image', src: '/assets/product identity/ok3.png', label: '' },
+                
                 
             ]
         },
