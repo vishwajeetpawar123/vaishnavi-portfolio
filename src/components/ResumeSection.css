@@ -21,6 +21,19 @@
     align-items: flex-start;
     border-bottom: 2px solid var(--color-text-primary);
     padding-bottom: 80px;
+    position: relative;
+}
+
+.poster-header::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--color-text-primary);
+    z-index: 30;
+    pointer-events: none;
 }
 
 .giant-name {
@@ -203,7 +216,7 @@
     width: 500px;
     opacity: 1;
     z-index: 10;
-    /* mix-blend-mode removed to hide dots */
+    position: relative;
     margin-bottom: -80px;
     margin-top: -200px;
     /* Stronger pull up */
@@ -224,6 +237,86 @@
     .resume-poster {
         padding: 30px;
     }
+    .poster-header {
+        padding-bottom: 10px;
+        margin-bottom: 12px;
+        align-items: center;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .hero-illustration {
+        width: 96%;
+        max-width: 520px;
+        z-index: 10;
+        position: relative;
+        margin: 0 0 -12px 0; /* pull image slightly down so it just meets the line */
+        display: block;
+    }
+
+    /* Make the header line sit slightly lower and thicker so it visually crosses the image */
+    .poster-header::after {
+        bottom: -12px; /* align with image bottom */
+        height: 4px; /* slim line so it doesn't cover the pants */
+        left: 2.5%;
+        right: 2.5%;
+        width: auto;
+        z-index: 40;
+    }
+
+}
+
+/* Extra small screens */
+@media (max-width: 600px) {
+    .giant-name {
+        font-size: 2.2rem;
+        line-height: 1.02;
+        margin-bottom: 6px;
+    }
+
+    .tagline {
+        font-size: 1.2rem;
+        margin-top: 8px;
+    }
+
+    .poster-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .hero-illustration {
+        width: 96%;
+        max-width: 520px;
+        z-index: 10;
+        position: relative;
+        margin: 0 0 -12px 0; /* pull image slightly down so it just meets the line */
+        display: block;
+    }
+
+    .poster-header::after {
+        bottom: -12px; /* align with image bottom */
+        height: 4px; /* slim line so it doesn't cover the pants */
+        left: 2.5%;
+        right: 2.5%;
+        width: auto;
+        z-index: 40;
+    }
+
+    .poster-header {
+        padding-bottom: 4px;
+        align-items: center;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .skill-logo {
+        width: 48px;
+        height: 48px;
+    }
+
+    .skills-container { flex-wrap: wrap; gap: 12px; }
+
+    .contact-section { padding: 24px 12px; margin-top: 30px; }
 }
 
 .contact-section {

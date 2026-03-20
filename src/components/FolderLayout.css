@@ -108,3 +108,37 @@
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+
+/* Mobile layout adjustments */
+@media (max-width: 600px) {
+    .zine-container {
+        width: 100vw;
+        height: auto;
+        min-height: 100vh;
+        box-shadow: none;
+    }
+
+    .zine-header {
+        padding: 12px 16px;
+        height: auto;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .zine-nav {
+        gap: 12px;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .nav-link {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+
+    .deco-bar-left { display: none; }
+
+    .deco-bar-bottom { padding: 12px 16px; }
+}

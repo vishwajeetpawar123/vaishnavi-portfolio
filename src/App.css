@@ -40,3 +40,15 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+  #root {
+    padding: 1rem;
+  }
+
+  .logo {
+    height: 4em;
+    padding: 1rem;
+  }
+}
