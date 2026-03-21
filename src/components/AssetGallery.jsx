@@ -308,11 +308,6 @@ const AssetGallery = () => {
             </div>
 
             {/* LIGHTBOX OVERLAY */}
-            /* ... rest of the code stays the same ... */
-
-{/* LIGHTBOX OVERLAY */}
-            {/* LIGHTBOX OVERLAY */}
-            {/* LIGHTBOX OVERLAY */}
             <AnimatePresence>
                 {selectedImage && (
                     <motion.div
@@ -341,8 +336,6 @@ const AssetGallery = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-
-/* ... rest of the code stays the same ... */
         </div>
     );
 };
