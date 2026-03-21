@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './AssetGallery.css';
 
@@ -154,16 +154,71 @@ const AssetGallery = () => {
 
     const handleNavigate = (node) => {
         if (node.children) {
-            setNavPath([...navPath, node]);
+            const newPath = [...navPath, node];
+            setNavPath(newPath);
+            const ids = newPath.map(n => n.id);
+            window.history.pushState({ nav: ids }, '', `#gallery/${ids.join('/')}`);
         }
     };
 
     const handleBreadcrumbClick = (index) => {
-        setNavPath(navPath.slice(0, index + 1));
+        const newPath = navPath.slice(0, index + 1);
+        setNavPath(newPath);
+        const ids = newPath.map(n => n.id);
+        window.history.pushState({ nav: ids }, '', `#gallery/${ids.join('/')}`);
     };
 
     const subFolders = currentView.children?.filter(c => c.type === 'category' || c.type === 'folder') || [];
     const files = currentView.children?.filter(c => c.type === 'image' || c.type === 'video' || c.type === 'pdf') || [];
+
+    // Helper to rebuild navPath array from an array of ids
+    const buildPathFromIds = (ids = []) => {
+        if (!ids || ids.length === 0) return [ASSET_TREE];
+        const path = [ASSET_TREE];
+        let cursor = ASSET_TREE;
+        for (let i = 1; i < ids.length; i++) {
+            const nextId = ids[i];
+            const child = cursor.children && cursor.children.find(c => c.id === nextId);
+            if (!child) break;
+            path.push(child);
+            cursor = child;
+        }
+        return path;
+    };
+
+    useEffect(() => {
+        // On mount, read hash or history.state to set initial nav
+        const init = () => {
+            const st = window.history.state;
+            if (st && st.nav) {
+                setNavPath(buildPathFromIds(st.nav));
+                if (st.lightbox && st.image) setSelectedImage(st.image);
+                return;
+            }
+            const hash = window.location.hash.replace(/^#/, '');
+            if (hash.startsWith('gallery/')) {
+                const ids = hash.replace('gallery/', '').split('/').filter(Boolean);
+                if (ids.length > 0) setNavPath(buildPathFromIds(['root', ...ids]));
+            }
+        };
+
+        init();
+
+        const onPop = (ev) => {
+            const st = ev.state;
+            if (!st) {
+                setNavPath([ASSET_TREE]);
+                setSelectedImage(null);
+                return;
+            }
+            if (st.nav) setNavPath(buildPathFromIds(st.nav));
+            if (st.lightbox) setSelectedImage(st.image || null);
+            else setSelectedImage(null);
+        };
+
+        window.addEventListener('popstate', onPop);
+        return () => window.removeEventListener('popstate', onPop);
+    }, []);
 
     return (
         <div className="gallery-container">
@@ -203,7 +258,7 @@ const AssetGallery = () => {
                                     >
                                         <div className="folder-thumb">
                                             {folder.thumbnail ? (
-                                                <img src={folder.thumbnail} alt={folder.name} />
+                                                        <img src={folder.thumbnail} alt={folder.name} loading="lazy" decoding="async" />
                                             ) : (
                                                 <div className="empty-thumb">DIR_EMPTY</div>
                                             )}
@@ -220,12 +275,17 @@ const AssetGallery = () => {
                                 {files.map((file, idx) => (
                                     <div key={idx} className={`file-card ${file.type === 'video' ? 'video-card' : ''} ${currentView.id === 'magazine-design' ? 'magazine-card' : ''}`}>
                                         {file.type === 'image' && (
-                                            <img 
-                                                src={file.src} 
-                                                alt={file.label} 
-                                                loading="lazy" 
-                                                onClick={() => setSelectedImage(file.src)} 
-                                                style={{ cursor: 'pointer' }} 
+                                            <img
+                                                src={file.src}
+                                                alt={file.label}
+                                                loading="lazy"
+                                                decoding="async"
+                                                onClick={() => {
+                                                    const ids = navPath.map(n => n.id);
+                                                    window.history.pushState({ nav: ids, lightbox: true, image: file.src }, '', `#gallery/${ids.join('/')}/img`);
+                                                    setSelectedImage(file.src);
+                                                }}
+                                                style={{ cursor: 'pointer' }}
                                             />
                                         )}
                                         {file.type === 'video' && <video src={file.src} controls />}
@@ -255,14 +315,14 @@ const AssetGallery = () => {
             {/* LIGHTBOX OVERLAY */}
             <AnimatePresence>
                 {selectedImage && (
-                    <motion.div 
+                    <motion.div
                         className="lightbox-overlay"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        onClick={() => setSelectedImage(null)}
+                        onClick={() => window.history.back()}
                     >
-                        <button className="close-lightbox" onClick={() => setSelectedImage(null)}>✕</button>
+                        <button className="close-lightbox" onClick={() => window.history.back()}>✕</button>
                         
                         <motion.div 
                             className="lightbox-image-wrapper"
@@ -271,10 +331,11 @@ const AssetGallery = () => {
                             exit={{ opacity: 0, y: 30 }}
                             onClick={(e) => e.stopPropagation()} 
                         >
-                            <img 
-                                src={selectedImage} 
-                                alt="Expanded view" 
+                            <img
+                                src={selectedImage}
+                                alt="Expanded view"
                                 className="lightbox-img"
+                                decoding="async"
                             />
                         </motion.div>
                     </motion.div>
