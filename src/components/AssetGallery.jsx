@@ -30,14 +30,9 @@ const ASSET_TREE = {
             type: 'folder',
             thumbnail: '/assets/cards/mock1.png',
             children: [
-                { type: 'image', src: '/assets/cards/florene_1.png', label: '' },
-                { type: 'image', src: '/assets/cards/florene_3.png', label: '' },
                 { type: 'image', src: '/assets/cards/mock1.png', label: '' },
                 { type: 'image', src: '/assets/cards/mock2.png', label: '' },
                 { type: 'image', src: '/assets/cards/mock3.png', label: '' },
-                { type: 'image', src: '/assets/cards/mock4.png', label: '' },
-                { type: 'image', src: '/assets/cards/g1.png', label: '' },
-                { type: 'image', src: '/assets/cards/g2.png', label: '' },
                 { type: 'image', src: '/assets/cards/m1.png', label: '' },
                 { type: 'image', src: '/assets/cards/m2.png', label: '' },
                 { type: 'image', src: '/assets/cards/m3.png', label: '' },
@@ -93,54 +88,6 @@ const ASSET_TREE = {
                 { type: 'image', src: '/assets/instagram posts/3 (2).png', label: '' },
                 { type: 'image', src: '/assets/instagram posts/foodfair.png', label: '' },
                 { type: 'image', src: '/assets/instagram posts/musicfest.png', label: '' }
-            ]
-        },
-        {
-            id: 'logos',
-            name: 'LOGOS',
-            type: 'folder',
-            thumbnail: '/assets/logos/Gemini_Generated_Image_x9gp4jx9gp4jx9gp.png',
-            children: [
-                { type: 'image', src: '/assets/logos/Gemini_Generated_Image_x9gp4jx9gp4jx9gp.png', label: '' },
-                { type: 'image', src: '/assets/logos/florene.png', label: '' }
-            ]
-        },
-        {
-            id: 'mockups',
-            name: 'MOCKUPS',
-            type: 'folder',
-            thumbnail: '/assets/Mockups/1.png',
-            children: [
-                { type: 'image', src: '/assets/Mockups/1.png', label: '' },
-                { type: 'image', src: '/assets/Mockups/2.png', label: '' },
-                { type: 'image', src: '/assets/Mockups/3.png', label: '' },
-                { type: 'image', src: '/assets/Mockups/5.png', label: '' },
-                { type: 'image', src: '/assets/Mockups/6.png', label: '' },
-                { type: 'image', src: '/assets/Mockups/7.png', label: '' },
-                { type: 'image', src: '/assets/Mockups/8.png', label: '' },
-                { type: 'image', src: '/assets/Mockups/10.png', label: '' },
-                { type: 'image', src: '/assets/Mockups/13.png', label: '' },
-                { type: 'image', src: '/assets/Mockups/14.png', label: '' }
-            ]
-        },
-        {
-            id: 'posters-promotional',
-            name: 'POSTERS & PROMOTIONAL',
-            type: 'folder',
-            thumbnail: '/assets/posters%20and%20promostional/idxff2.png',
-            children: [
-                { type: 'image', src: '/assets/posters%20and%20promostional/idxff2.png', label: '1' },
-                { type: 'video', src: '/assets/posters%20and%20promostional/Blue%20Modern%20Minimalist%20Fashion%20Coming%20Soon%20Instagram%20Story.mp4', label: '' },
-                { type: 'video', src: '/assets/posters%20and%20promostional/White%20and%20Brown%20Modern%20Coming%20Soon%20Instagram%20Story.mp4', label: '' }
-            ]
-        },
-        {
-            id: 'UI',
-            name: 'UI Design',
-            type: 'folder',
-            thumbnail: '/assets/chattergals_thumb.jpg',
-            children: [
-                { type: 'video', src: '/assets/UI/UII.mp4', label: '' }
             ]
         }
     ]
