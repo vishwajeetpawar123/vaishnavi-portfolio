@@ -20,12 +20,12 @@ const ResumeSection = () => {
 
             <div className="poster-grid">
                 <section className="grid-section" data-index="01">
-                    <h2>MANIFESTO</h2>
+                    <h2>ABOUT ME</h2>
                     <p className="manifesto-text">
-                        I craft digital experiences that blend artistic intuition with strategic design.
-                        My work is not just about aesthetics; it's about creating a visual language
-                        that speaks louder than words. From editorial layouts to motion graphics,
-                        I push boundaries to deliver impact.
+                        I’m a graphic designer who loves turning simple ideas into visuals that actually feel something. My work sits somewhere between minimal and expressive. I’m drawn to design that tells a story without trying too hard. Whether it’s branding, packaging, or digital visuals, I focus on creating work that looks good and makes sense. I enjoy experimenting, refining, and finding that one small detail that elevates everything.
+                        Outside of pixels and grids, I’m constantly observing textures, colors, everyday moments because that’s where the best ideas usually come from.
+                        Still learning, always evolving just trying to make things a little more thoughtful and a lot more interesting.
+
                     </p>
                     <a href="/resume.pdf" target="_blank" className="cta-download">
                         DOWNLOAD RESUME

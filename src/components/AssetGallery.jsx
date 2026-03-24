@@ -47,7 +47,7 @@ const ASSET_TREE = {
             id: 'p-identity',
             name: 'PRODUCT IDENTITY & PACKAGING',
             type: 'folder',
-            thumbnail: '/assets/product identity/m33.png',
+            thumbnail: '/assets/product identity/cs1.png',
             children: [
                 { type: 'image', src: '/assets/product identity/m11.png', label: '' },
                 { type: 'image', src: '/assets/product identity/m22.png', label: '' },
@@ -62,6 +62,14 @@ const ASSET_TREE = {
                 { type: 'image', src: '/assets/product identity/7.png', label: '' },
                 { type: 'image', src: '/assets/product identity/ok.png', label: '' },
                 { type: 'image', src: '/assets/product identity/ok3.png', label: '' },
+                { type: 'image', src: '/assets/product identity/cs1.png', label: '' },
+                { type: 'image', src: '/assets/product identity/cs2.png', label: '' },
+                { type: 'image', src: '/assets/product identity/cs3.png', label: '' },
+                { type: 'image', src: '/assets/product identity/cs4.png', label: '' },
+                { type: 'image', src: '/assets/product identity/cs5.png', label: '' },
+                { type: 'image', src: '/assets/product identity/cs6.png', label: '' },
+                
+                
                 
                 
             ]
