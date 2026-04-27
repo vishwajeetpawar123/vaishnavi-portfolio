@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './AssetGallery.css';
 
@@ -51,24 +51,21 @@ const ASSET_TREE = {
             children: [
                 { type: 'image', src: '/assets/product identity/m11.png', label: '' },
                 { type: 'image', src: '/assets/product identity/m22.png', label: '' },
-                { type: 'image', src: '/assets/product identity/m33.png', label: '' },
-                { type: 'video', src: '/assets/product identity/m55.mp4', label: '' },
-                { type: 'image', src: '/assets/product identity/1.png', label: '' },
-                { type: 'image', src: '/assets/product identity/2.png', label: '' },
-                { type: 'image', src: '/assets/product identity/3.png', label: '' },
-                { type: 'image', src: '/assets/product identity/4.png', label: '' },
-                { type: 'image', src: '/assets/product identity/5.png', label: '' },
-                { type: 'image', src: '/assets/product identity/6.png', label: '' },
-                { type: 'image', src: '/assets/product identity/7.png', label: '' },
-                { type: 'image', src: '/assets/product identity/ok.png', label: '' },
-                { type: 'image', src: '/assets/product identity/ok3.png', label: '' },
                 { type: 'image', src: '/assets/product identity/cs1.png', label: '' },
                 { type: 'image', src: '/assets/product identity/cs2.png', label: '' },
                 { type: 'image', src: '/assets/product identity/cs3.png', label: '' },
                 { type: 'image', src: '/assets/product identity/cs4.png', label: '' },
                 { type: 'image', src: '/assets/product identity/cs5.png', label: '' },
                 { type: 'image', src: '/assets/product identity/cs6.png', label: '' },
-                
+                { type: 'image', src: '/assets/product identity/1.png', label: '' },
+                { type: 'image', src: '/assets/product identity/2.png', label: '' },
+                { type: 'image', src: '/assets/product identity/3.png', label: '' },
+                { type: 'image', src: '/assets/product identity/4.png', label: '' },
+                { type: 'image', src: '/assets/product identity/5.png', label: '' },
+                { type: 'image', src: '/assets/product identity/7.png', label: '' },
+                { type: 'image', src: '/assets/product identity/ok.png', label: '' },
+                { type: 'image', src: '/assets/product identity/10.png', label: '' },
+                { type: 'image', src: '/assets/product identity/.png', label: '' },
                 
                 
                 
@@ -104,6 +101,8 @@ const ASSET_TREE = {
 const AssetGallery = () => {
     const [navPath, setNavPath] = useState([ASSET_TREE]);
     const [selectedImage, setSelectedImage] = useState(null); // Lightbox State
+    const ioRef = useRef(null);
+    const PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAAAAACw='; // tiny transparent placeholder
 
     const currentView = navPath[navPath.length - 1];
 
@@ -175,6 +174,54 @@ const AssetGallery = () => {
         return () => window.removeEventListener('popstate', onPop);
     }, []);
 
+    // IntersectionObserver lazy loader for better control + placeholder transition
+    useEffect(() => {
+        const placeholder = 'data:image/gif;base64,R0lGODlhAQABAAAAACw='; // tiny transparent
+
+        const onIntersection = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    const dataSrc = img.getAttribute('data-src');
+                    if (dataSrc) {
+                        img.src = dataSrc;
+                        // Once image loads, mark it so CSS can remove blur
+                        img.addEventListener('load', function handler() {
+                            img.classList.add('is-loaded');
+                            img.removeEventListener('load', handler);
+                        });
+                        img.removeAttribute('data-src');
+                    }
+                    observer.unobserve(img);
+                }
+            });
+        };
+
+        // create observer if not present
+        if (!ioRef.current) {
+            ioRef.current = new IntersectionObserver(onIntersection, {
+                root: null,
+                rootMargin: '200px',
+                threshold: 0.01
+            });
+        }
+
+        // observe any lazy images currently in the DOM
+        const lazyImages = Array.from(document.querySelectorAll('img.lazy-img'));
+        lazyImages.forEach(img => {
+            // if already has real src, mark loaded
+            if (!img.getAttribute('data-src') && img.complete) img.classList.add('is-loaded');
+            else if (img.getAttribute('data-src')) ioRef.current.observe(img);
+        });
+
+        return () => {
+            if (ioRef.current) {
+                ioRef.current.disconnect();
+                ioRef.current = null;
+            }
+        };
+    }, [navPath, selectedImage]);
+
     return (
         <div className="gallery-container">
             <nav className="breadcrumb-nav">
@@ -213,7 +260,14 @@ const AssetGallery = () => {
                                     >
                                         <div className="folder-thumb">
                                             {folder.thumbnail ? (
-                                                        <img src={folder.thumbnail} alt={folder.name} loading="lazy" decoding="async" />
+                                                <img
+                                                    className="lazy-img"
+                                                    src={PLACEHOLDER}
+                                                    data-src={folder.thumbnail}
+                                                    alt={folder.name}
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                />
                                             ) : (
                                                 <div className="empty-thumb">DIR_EMPTY</div>
                                             )}
@@ -231,13 +285,18 @@ const AssetGallery = () => {
                                     <div key={idx} className={`file-card ${file.type === 'video' ? 'video-card' : ''} ${currentView.id === 'magazine-design' ? 'magazine-card' : ''}`}>
                                         {file.type === 'image' && (
                                             <img
-                                                src={file.src}
+                                                className="lazy-img"
+                                                src={PLACEHOLDER}
+                                                data-src={file.src}
                                                 alt={file.label}
                                                 loading="lazy"
                                                 decoding="async"
                                                 onClick={() => {
                                                     const ids = navPath.map(n => n.id);
                                                     window.history.pushState({ nav: ids, lightbox: true, image: file.src }, '', `#gallery/${ids.join('/')}/img`);
+                                                    // Prefetch the full image for faster lightbox
+                                                    const p = new Image();
+                                                    p.src = file.src;
                                                     setSelectedImage(file.src);
                                                 }}
                                                 style={{ cursor: 'pointer' }}
@@ -282,9 +341,10 @@ const AssetGallery = () => {
                             onClick={(e) => e.stopPropagation()} 
                         >
                             <img
-                                src={selectedImage}
+                                className="lightbox-img lazy-img"
+                                src={PLACEHOLDER}
+                                data-src={selectedImage}
                                 alt="Expanded view"
-                                className="lightbox-img"
                                 decoding="async"
                             />
                         </motion.div>
